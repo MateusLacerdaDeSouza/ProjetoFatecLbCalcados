@@ -1,0 +1,71 @@
+/* header.css */
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif; /* Fonte do corpo */
+}
+
+header {
+    display: flex;
+    justify-content: space-between; /* Espaçamento entre os elementos */
+    align-items: center; /* Alinha os itens verticalmente ao centro */
+    padding: 10px 20px; /* Espaçamento interno */
+    background-color: #ffffff; /* Cor de fundo do header */
+}
+
+.logo img {
+    height: 50px; /* Altura do logo */
+}
+
+.search-container {
+    position: relative; /* Permite que a imagem seja posicionada em relação ao container */
+    width: 720px; /* Largura do campo de busca */
+    height: 50px;
+    display: flex; /* Para alinhar o campo de busca e o botão */
+    align-items: center; /* Alinha verticalmente o campo e a imagem */
+}
+
+.search-container input {
+    width: 720px; /* Largura do campo de busca */
+    /*height: 40px;*/
+    padding: 10px 40px 10px 10px; /* Espaçamento interno (esquerda, direita, cima, baixo) */
+    border: 1px solid #E8E0E0;
+    ; /* Borda do campo */
+    border-radius: 30px; /* Bordas arredondadas */
+    background-color: #E8E0E0;
+}
+
+.search-container button {
+    padding: 10px 15px; /* Espaçamento do botão */
+    margin-left: 5px; /* Espaço entre o campo de busca e o botão */
+    background-color: #007BFF; /* Cor de fundo do botão */
+    color: white; /* Cor do texto do botão */
+    border: none; /* Remove borda padrão */
+    border-radius: 4px; /* Bordas arredondadas */
+    cursor: pointer; /* Muda o cursor ao passar o mouse */
+}
+
+.icons {
+    display: flex; /* Para alinhar os ícones horizontalmente */
+    gap: 15px; /* Espaçamento entre os ícones */
+}
+
+.icon {
+    font-size: 24px; /* Tamanho dos ícones */
+    cursor: pointer; /* Muda o cursor ao passar o mouse */
+}
+
+.icon {
+    width: 40px; /* Largura da imagem */
+    height: auto; /* Altura automática para manter a proporção */
+    cursor: pointer; /* Muda o cursor ao passar o mouse */
+    margin-right: 15px; /* Espaço entre os ícones */
+}
+
+.icon-busca {
+    position: absolute; /* Permite que a imagem fique sobre o campo de entrada */
+    right: 10px; /* Espaço da borda direita do campo de entrada */
+    width: 20px; /* Largura da imagem */
+    height: 20px; /* Altura da imagem */
+    cursor: pointer; /* Muda o cursor ao passar o mouse */
+}
