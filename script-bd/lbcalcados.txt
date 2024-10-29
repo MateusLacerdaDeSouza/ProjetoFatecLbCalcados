@@ -1,0 +1,51 @@
+create database lbcalcados;
+use lbcalcados;
+create table clientes (
+idcliente int not null auto_increment primary key,
+ nome varchar(200) not null,
+email varchar(200) not null,
+senha varchar(100) not null,
+telefone varchar (15) not null,
+endereco varchar (200) not null,
+cep varchar (10),
+cidade varchar (50),
+estado varchar (50),
+cpf varchar(15) not null,
+unique key (cpf)
+);
+create table produtos (
+idprodutos int not null auto_increment primary key,
+ nome varchar (100),
+descricao text,
+preco decimal (10,2) not null,
+cor varchar(50) not null,
+tamanho int not null,
+marca varchar(20) not null,
+url_img varchar(300), 
+categoria varchar(50) not null
+);
+create table pedidos (
+idpedido int not null auto_increment primary key,
+cliente_id int,
+ datapedido date,
+etapa varchar(20) not null,
+valor_total decimal not null,
+foreign key (cliente_id) references clientes (idcliente)
+);
+create table itenspedidos(
+iditens int not null primary key auto_increment,
+pedido_id int, 
+produto_id int, 
+quantidade int not null,
+preco_unidade decimal (10,2) not null,
+foreign key (pedido_id) references pedidos (idpedido),
+foreign key (produto_id) references produtos (idprodutos)
+);
+create table pagamentos (
+pagamento_id int not null primary key auto_increment,
+pedido_id int, 
+forma_pagamento varchar (50) not null,
+valor decimal (10,2) not null,
+data_pagamento datetime not null,
+foreign key (pedido_id) references pedidos (idpedido)
+);

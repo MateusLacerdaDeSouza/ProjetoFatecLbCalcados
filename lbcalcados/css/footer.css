@@ -1,0 +1,19 @@
+footer {
+    background-color: #020000;
+    color: #FFF7F7;
+    text-align: center; /* Centraliza o conteúdo do footer */
+    padding: 20px 0; /* Espaçamento superior e inferior */
+}
+
+footer ul {
+    list-style-position: inside; /* Bolinhas dentro da área de texto */
+    padding: 0;
+    margin: 0;
+    display: inline-block; /* Para centralizar a lista */
+    width: 100%; /* Faz a lista ocupar a largura total */
+}
+
+footer li {
+    text-align: center; /* Centraliza o conteúdo de cada item */
+    margin-bottom: 2px; /* Espaço entre os itens */
+}
