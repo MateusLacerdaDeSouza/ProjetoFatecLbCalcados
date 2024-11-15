@@ -1,8 +1,16 @@
-/* header.css */
+/* <uniquifier>: Use a unique and descriptive class name
+<weight>: Use a value from 100 to 900*/
+
+.inter-uniquifier {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: weight;
+    font-style: normal;
+}
 
 body {
     margin: 0;
-    font-family: 'Inter', sans-serif; /* Fonte do corpo */
+    font-family: 'Inter', sans-serif;
 }
 
 header {
@@ -41,31 +49,72 @@ header {
     background-color: #007BFF; /* Cor de fundo do botão */
     color: white; /* Cor do texto do botão */
     border: none; /* Remove borda padrão */
-    border-radius: 4px; /* Bordas arredondadas */
-    cursor: pointer; /* Muda o cursor ao passar o mouse */
+    border-radius: 4px; 
+    cursor: pointer; 
 }
 
 .icons {
-    display: flex; /* Para alinhar os ícones horizontalmente */
-    gap: 15px; /* Espaçamento entre os ícones */
+    display: flex; 
+    gap: 15px; 
 }
 
 .icon {
-    font-size: 24px; /* Tamanho dos ícones */
-    cursor: pointer; /* Muda o cursor ao passar o mouse */
+    font-size: 24px; 
+    cursor: pointer; 
 }
 
 .icon {
-    width: 40px; /* Largura da imagem */
-    height: auto; /* Altura automática para manter a proporção */
-    cursor: pointer; /* Muda o cursor ao passar o mouse */
-    margin-right: 15px; /* Espaço entre os ícones */
+    width: 40px; 
+    height: auto; 
+    cursor: pointer; 
+    margin-right: 15px; 
 }
 
 .icon-busca {
-    position: absolute; /* Permite que a imagem fique sobre o campo de entrada */
-    right: 10px; /* Espaço da borda direita do campo de entrada */
-    width: 20px; /* Largura da imagem */
-    height: 20px; /* Altura da imagem */
-    cursor: pointer; /* Muda o cursor ao passar o mouse */
+    position: absolute; 
+    right: 10px; 
+    width: 20px; 
+    height: 20px; 
+    cursor: pointer; 
+}
+
+
+.top-bar {
+    background-color: #1E1E1E; 
+    padding: 10px 0; 
+    height: 80px;
+    text-align: center; 
+}
+
+.top-bar ul {
+    list-style: none; 
+    display: flex; 
+    justify-content: space-around; 
+    margin: 0; 
+    padding: 0; 
+}
+
+.top-bar li {
+    color: #ffffff; 
+    font-size: 36px; 
+    cursor: pointer; 
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal; 
+}
+
+.top-bar li:hover {
+    text-decoration: underline; 
+}
+
+.top-bar a {
+    text-decoration: none;
+    font-size: 36px;
+    font-weight: 600;
+    font-style: italic;
+    color: #fff;
+}
+
+a {
+    text-decoration: none;
 }
