@@ -20,7 +20,7 @@
         </div>
         <div class="icons">
             <img src="img/image.png" alt="Carrinho de Compras" class="icon" /> <!-- Ícone do carrinho como imagem -->
-            <img src="img/perfil.png" alt="Perfil" class="icon"/>
+            <a href="usuario/perfilUser.php"><img src="img/perfil.png" alt="Perfil" class="icon"/></a>
             <img src="img/carrinho.png" alt="Carrinho" class="icon"/>
     </header>
 

@@ -71,19 +71,52 @@ class Produto {
             die('Erro na preparação da consulta: ' . $this->conn->error);
         }
     
-        $stmt->bind_param("ssdsssdsi", $nome, $descricao, $preco, $cor, $tamanho, $marca, $url_img, $categoria, $estoque_qtd);
+        $stmt->bind_param("ssdsisssi", $nome, $descricao, $preco, $cor, $tamanho, $marca, $url_img, $categoria, $estoque_qtd);
         
-        if (!$stmt->execute()) {
+        if ($stmt->execute()) {
             
             return true;
 
         } else {
-            
+
             die('Erro ao executar a consulta: ' . $stmt->error);
         }
     
         return true;
     }
+
+    public function atualizarImagem($id_produto, $url_img) {
+        $query = "UPDATE produtos SET url_img = ? WHERE id_produto = ?";
+
+        $stmt = $this->conn->prepare($query);
+
+        if($stmt === false){
+            die('Eroo na preparação da consulta: ' . $this->conn->error);
+        }
+
+        $stmt->bind_param("si", $url_img, $id_produto);
+
+
+        if($stmt->execute()){
+            return true;
+        } else {
+            die('Erro ao atualizar a imagem ' . $stmt->error);
+        }
+    }
+
+    public function listarProdutos() {
+        $query = "SELECT * FROM produtos ORDER BY idprodutos DESC";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        $produtos = [];
+        while ($row = $result->fetch_assoc()) {
+            $produtos[] = $row;
+        }
+        return $produtos;
+    }
+    
 }
 
 // Exemplo de uso (supondo que você tenha uma conexão com o banco $db_connection):

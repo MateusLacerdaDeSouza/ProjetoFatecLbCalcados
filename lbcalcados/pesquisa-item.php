@@ -96,7 +96,7 @@
 
             <!-- Produto 2 -->
             <div class="product-card">
-                <img src="https://via.placeholder.com/150" alt="Produto 2">
+                <img src="https://via.placeholder.com/60" alt="Produto 2">
                 <p class="product-name">Produto 2</p>
                 <p class="product-description">Descrição breve do produto 2.</p>
                 <p class="product-price">R$120,00</p>
