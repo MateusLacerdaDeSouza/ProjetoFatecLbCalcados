@@ -115,7 +115,68 @@ class Produto {
             $produtos[] = $row;
         }
         return $produtos;
+
     }
+
+
+    // Método para atualizar as informações de um produto
+    public function atualizarProduto($id_produto, $nome, $descricao, $preco, $cor, $tamanho, $marca, $url_img, $categoria, $estoque_qtd) {
+        if (empty($categoria)) {
+            $categoria = 'diversos';
+        }
+    
+        $query = "UPDATE produtos SET nome = ?, descricao = ?, preco = ?, cor = ?, tamanho = ?, marca = ?, url_img = ?, categoria = ?, estoque_qtd = ? 
+                  WHERE idprodutos = ?";
+    
+        $stmt = $this->conn->prepare($query);
+    
+        if ($stmt === false) {
+            die('Erro na preparação da consulta: ' . $this->conn->error);
+        }
+    
+        $stmt->bind_param("ssdsisssii", $nome, $descricao, $preco, $cor, $tamanho, $marca, $url_img, $categoria, $estoque_qtd, $id_produto);
+    
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            die('Erro ao atualizar o produto: ' . $stmt->error);
+        }
+    }
+    
+
+    // Método para excluir um produto
+    public function excluirProduto($id_produto) {
+        $query = "DELETE FROM produtos WHERE idprodutos = ?";
+
+        $stmt = $this->conn->prepare($query);
+
+        if ($stmt === false) {
+            die('Erro na preparação da consulta: ' . $this->conn->error);
+        }
+
+        $stmt->bind_param("i", $id_produto);
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            die('Erro ao excluir o produto: ' . $stmt->error);
+        }
+    }
+
+    public function buscarProduto($id_produto) {
+        $query = "SELECT * FROM produtos WHERE idprodutos = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("i", $id_produto);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if ($row = $result->fetch_assoc()) {
+            return $row; // Retorna os dados do produto encontrado
+        } else {
+            return null; // Retorna null se não encontrar o produto
+        }
+    }
+    
     
 }
 
