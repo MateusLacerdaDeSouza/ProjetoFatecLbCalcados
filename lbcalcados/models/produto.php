@@ -180,7 +180,6 @@ class Produto {
     
 
     public function buscarIndex($limit = 4) {
-        $query = "SELECT * FROM produtos LIMIT $limit";
         $stmt = $this->conn->prepare($query);
         
         $stmt->execute();

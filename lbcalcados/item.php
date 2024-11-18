@@ -15,6 +15,21 @@
     <!--inclui o Header-->
     <?php include 'header.php'; ?>
 
+    <?php 
+    require_once __DIR__ . '/models/produto.php';
+    if (isset($_GET['id'])) {
+            $id_produto = intval($_GET['id']);
+            $produtoObj = new Produto();
+            $produto = $produtoObj->buscarProduto($id_produto);
+        }
+    
+        if(!$produto){
+            echo "Produto não encontrado!";
+            exit;
+        }
+    
+    ?>
+
     <!-- primeira div principal -->
     <div class="product-card">
         <!-- Imagem com balão de desconto -->
@@ -22,7 +37,7 @@
             <div class="discount-tag">
                 <p>50% OFF</p>
             </div>
-            <img src="img/bota-alta.jpeg" alt="Produto">
+            <img src="<?php echo 'administrador/' . $produto['url_img']; ?>" alt="<?php echo $produto['nome'];?>">
         </div>
 
         <!-- Área de conteúdo textual e botões -->
