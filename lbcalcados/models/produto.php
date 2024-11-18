@@ -1,5 +1,6 @@
 <?php
-require_once '../config/connection.php'; 
+require_once __DIR__ . '/../config/connection.php'; 
+
 
 
 class Produto {
@@ -177,6 +178,25 @@ class Produto {
         }
     }
     
+
+    public function buscarIndex($limit = 4) {
+        $query = "SELECT * FROM produtos LIMIT $limit";
+        $stmt = $this->conn->prepare($query);
+        
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        $products = []; // Inicialize como array vazio, não como string
+    
+        while ($row = $result->fetch_assoc()) {
+            $products[] = $row;
+        }
+    
+        return $products; // Retorne um array, mesmo que vazio
+    }
+    
+    
+
     
 }
 

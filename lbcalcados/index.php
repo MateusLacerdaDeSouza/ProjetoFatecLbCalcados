@@ -13,72 +13,54 @@
 </head>
 <body>
     <!-- Inclui o Header-->
-    <?php include 'header.php'; ?>
+    <?php require_once 'header.php'; 
+        
+    ?>
 
-    <img src="img/50off.png" alt="Promoção" class="promocao">
+ 
+<?php
+require_once __DIR__ . '/models/produto.php';
 
-    <h2 class="titulo-promo">AMAMOS PROMO</h2>
+if (!class_exists('Produto')) {
+    die("A classe Produto não foi carregada corretamente.");
+}
 
-    <!-- Seção com as imagens -->
-    <div class="product-container">
-        <div class="product" class="click" onclick="window.location.href='item.php'">
-            <div class="discount-tag">
-                <p>50% OFF</p> 
-            </div>
-            <img src="img/bota-alta.jpeg" alt="Produto 1">
-            <div class="product-info">
-                <h3>BOTA CANO ALTO SALTO 12 CM </h3>
-                <div class="price-container">
-                    <span class="price">R$ 175,00</span>
-                    <span class="old-price">R$ 350,00</span>
-                </div>
-            </div>
+$produtoObj = new Produto();
+$produtos = $produtoObj->buscarIndex(4);
+
+if ($produtos === null) {
+    die("Erro: O método buscarIndex() retornou null.");
+}
+
+?>
+
+   
+<img src="img/50off.png" alt="Promoção" class="promocao">
+
+<h2 class="titulo-promo">AMAMOS PROMO</h2>
+
+<div class="product-container">
+<?php foreach ($produtos as $produto): ?>
+    <div class="product" class="click" onclick="window.location.href='item.php?id=<?php echo $produto['idprodutos']; ?>'">
+        <div class="discount-tag">
+            <p>50% OFF</p> 
         </div>
-        <div class="product">
-            <div class="discount-tag">
-                <p>50% OFF</p> 
-            </div>
-            <img src="img/sapatilha-vermelha.jpeg" alt="Produto 2">
-            <div class="product-info">
-                <h3>SAPATILHA MARY JANE VERMELHO</h3>
-                <div class="price-container">
-                    <span class="price">R$ 90,00</span>
-                    <span class="old-price">R$ 180,00</span>
-                </div>
-            </div>
-        </div>
-        <div class="product">
-            <div class="discount-tag">
-                <p>50% OFF</p> 
-            </div>
-            <img src="img/salto-alto-vermelho.jpeg" alt="Produto 3">
-            <div class="product-info">
-                <h3>SALTO ALTO SCARPIN VERMELHO</h3>
-                <div class="price-container">
-                    <span class="price">R$ 75,00</span>
-                    <span class="old-price">R$ 150,00</span>
-                </div>
-            </div>
-        </div>
-        <div class="product">
-            <div class="discount-tag">
-                <p>50% OFF</p> 
-            </div>
-            <img src="img/sapato-colorido.jpeg" alt="Produto 4">
-            <div class="product-info">
-                <h3>SANDALIA SALTO ALTO COLORIDO</h3>
-                <div class="price-container">
-                    <span class="price">R$ 100,00</span>
-                    <span class="old-price">R$ 200,00</span>
-                </div>
+        <img src="<?php echo 'administrador/' . $produto['url_img']; ?>" alt="<?php echo $produto['nome']; ?>">
+        <div class="product-info">
+            <h3><?php echo $produto['nome']; ?></h3>
+            <div class="price-container">
+                <span class="price">R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?></span>
+                <span class="old-price">R$ <?php echo number_format(10, 2, ',', '.'); ?></span>
             </div>
         </div>
     </div>
+<?php endforeach; ?>
+</div>
 
-    <br><br><br><br><br>
+<br><br><br><br><br>
 
-    <!-- Inclui o rodapé -->
-    <?php include 'footer.html'; ?>
+<!-- Inclui o rodapé -->
+<?php include 'footer.html'; ?>
 
 
     
