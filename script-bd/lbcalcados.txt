@@ -1,5 +1,16 @@
 create database lbcalcados;
+
 use lbcalcados;
+
+create table administradores (
+    idadmin INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(200) NOT NULL,
+    email VARCHAR(200) NOT NULL,
+    senha VARCHAR(100) NOT NULL,
+    UNIQUE KEY (email)
+);
+
+
 create table clientes (
 idcliente int not null auto_increment primary key,
  nome varchar(200) not null,
@@ -22,7 +33,9 @@ cor varchar(50) not null,
 tamanho int not null,
 marca varchar(20) not null,
 url_img varchar(300), 
-categoria varchar(50) not null
+categoria varchar(50) not null,
+estoque_qtd INT NOT NULL,
+data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
 );
 create table pedidos (
 idpedido int not null auto_increment primary key,
@@ -49,3 +62,5 @@ valor decimal (10,2) not null,
 data_pagamento datetime not null,
 foreign key (pedido_id) references pedidos (idpedido)
 );
+
+C:\xampp\phpMyAdmin\config.inc.php mudar essa porta para 3306

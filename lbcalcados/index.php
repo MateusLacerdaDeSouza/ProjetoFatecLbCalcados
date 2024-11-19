@@ -6,66 +6,70 @@
     <title>LB Calçados</title>
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/index.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+    </style>
+    <link rel="shortcut icon" type="imagex/png" href="img/logo-mini.png">
 </head>
 <body>
-    <!-- Inclui o Header do site -->
+    <!-- Inclui o Header-->
     <?php include 'header.php'; ?>
 
-    <!-- Barra de navegação -->
-    <nav class="top-bar">
-        <ul>
-            <li>Botas</li>
-            <li>Scarpin</li>
-            <li>Sapatilha</li>
-            <li>Salto Alto</li>
-            <li>Mocassim</li>
-            <li>Diversos</li>
-        </ul>
-    </nav>
-
-    <img src="img/sapatos.jpeg" alt="Promoção" class="promocao">
+    <img src="img/50off.png" alt="Promoção" class="promocao">
 
     <h2 class="titulo-promo">AMAMOS PROMO</h2>
 
     <!-- Seção com as imagens -->
     <div class="product-container">
-        <div class="product">
+        <div class="product" class="click" onclick="window.location.href='item.php'">
+            <div class="discount-tag">
+                <p>50% OFF</p> 
+            </div>
             <img src="img/bota-alta.jpeg" alt="Produto 1">
             <div class="product-info">
-                <h3>Nome do Produto 1</h3>
+                <h3>BOTA CANO ALTO SALTO 12 CM </h3>
                 <div class="price-container">
-                    <span class="price">R$ 99,90</span>
-                    <span class="old-price">R$ 129,90</span>
+                    <span class="price">R$ 175,00</span>
+                    <span class="old-price">R$ 350,00</span>
                 </div>
             </div>
         </div>
         <div class="product">
-            <img src="img/bota-alta.jpeg" alt="Produto 2">
+            <div class="discount-tag">
+                <p>50% OFF</p> 
+            </div>
+            <img src="img/sapatilha-vermelha.jpeg" alt="Produto 2">
             <div class="product-info">
-                <h3>Nome do Produto 2</h3>
+                <h3>SAPATILHA MARY JANE VERMELHO</h3>
                 <div class="price-container">
-                    <span class="price">R$ 89,90</span>
-                    <span class="old-price">R$ 119,90</span>
+                    <span class="price">R$ 90,00</span>
+                    <span class="old-price">R$ 180,00</span>
                 </div>
             </div>
         </div>
         <div class="product">
-            <img src="img/bota-alta.jpeg" alt="Produto 3">
+            <div class="discount-tag">
+                <p>50% OFF</p> 
+            </div>
+            <img src="img/salto-alto-vermelho.jpeg" alt="Produto 3">
             <div class="product-info">
-                <h3>Nome do Produto 3</h3>
+                <h3>SALTO ALTO SCARPIN VERMELHO</h3>
                 <div class="price-container">
-                    <span class="price">R$ 79,90</span>
-                    <span class="old-price">R$ 109,90</span>
+                    <span class="price">R$ 75,00</span>
+                    <span class="old-price">R$ 150,00</span>
                 </div>
             </div>
         </div>
         <div class="product">
-            <img src="img/bota-alta.jpeg" alt="Produto 4">
+            <div class="discount-tag">
+                <p>50% OFF</p> 
+            </div>
+            <img src="img/sapato-colorido.jpeg" alt="Produto 4">
             <div class="product-info">
-                <h3>Nome do Produto 4</h3>
+                <h3>SANDALIA SALTO ALTO COLORIDO</h3>
                 <div class="price-container">
-                    <span class="price">R$ 69,90</span>
-                    <span class="old-price">R$ 99,90</span>
+                    <span class="price">R$ 100,00</span>
+                    <span class="old-price">R$ 200,00</span>
                 </div>
             </div>
         </div>

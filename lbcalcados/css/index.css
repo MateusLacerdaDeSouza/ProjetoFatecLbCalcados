@@ -1,24 +1,11 @@
-.top-bar {
-    background-color: #1E1E1E; /* Fundo preto */
-    padding: 10px 0; /* Espaçamento superior e inferior */
-}
+/* <uniquifier>: Use a unique and descriptive class name
+<weight>: Use a value from 100 to 900*/
 
-.top-bar ul {
-    list-style: none; /* Remove os marcadores da lista */
-    display: flex; /* Alinha os itens da lista em linha */
-    justify-content: space-around; /* Espaça os itens igualmente */
-    margin: 0; /* Remove a margem padrão */
-    padding: 0; /* Remove o preenchimento padrão */
-}
-
-.top-bar li {
-    color: #ffffff; /* Cor do texto branca */
-    font-size: 18px; /* Tamanho da fonte */
-    cursor: pointer; /* Muda o cursor ao passar o mouse */
-}
-
-.top-bar li:hover {
-    text-decoration: underline; /* Adiciona sublinhado ao passar o mouse */
+.inter-uniquifier {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: weight;
+    font-style: normal;
 }
 
 .promocao {
@@ -46,17 +33,58 @@ body {
     padding: 20px; /* Espaçamento nas bordas da seção */
     max-width: 1200px; /* Largura máxima da seção */
     margin: 0 auto; /* Centraliza a seção na página */
+    margin-bottom: 50px;
 }
 
 .product {
-    flex: 1; /* Cada produto ocupa espaço igual */
-    margin: 0 10px; /* Espaçamento entre os produtos */
-    text-align: left; /* Alinha o texto à esquerda */
+    flex: 1; 
+    margin: 0 10px; 
+    text-align: left;
+}
+
+.product {
+    position: relative; /* Necessário para posicionar o desconto dentro da imagem */
+}
+  
+.discount-tag {
+    position: absolute;
+    top: 10px; /* Espaçamento da parte superior da imagem */
+    left: 10px; /* Espaçamento da parte esquerda da imagem */
+    background-color: yellow; /* Cor de fundo do quadrado */
+    color: black; /* Cor do texto */
+    font-weight: italic;
+    padding: 5px 10px;
+    border-radius: 15px;
+    width: 66px; /* Largura fixa do quadrado */
+    display: flex; /* Define o uso de Flexbox */
+    justify-content: center; /* Centraliza o texto horizontalmente */
+    align-items: center; /* Centraliza o texto verticalmente */
+    font-size: 13px; /* Ajusta o tamanho da fonte */
+    white-space: nowrap; /* Impede quebra de linha */
+    overflow: hidden; /* Impede que o texto ultrapasse o limite */
+    text-overflow: ellipsis; /* Adiciona '...' se o texto for muito grande */
+    height: 38px;
+}
+
+.discount-tag p {
+    margin: 0; /* Remove margens do parágrafo */
+    line-height: 16px; /* Garante que a altura da linha seja 16px */
+    font-style: italic; /* Torna o texto itálico */
+    font-weight: 600;
+    line-height: 15.73px;  
+}
+  
+.product img {
+    width: 100%; /* Imagem responsiva */
+}
+
+.product h3{
+    font-size: 13px;
 }
 
 .product img {
     width: 100%; /* Faz a imagem ocupar toda a largura do contêiner */
-    height: auto; /* Mantém a proporção da imagem */
+    height: 405px; /* Mantém a proporção da imagem */
 }
 
 .product-info {
@@ -73,6 +101,7 @@ body {
     font-size: 20px; /* Tamanho do preço principal */
     color: #000; /* Cor do preço principal */
     margin-right: 10px; /* Espaçamento entre os preços */
+    font-size: 20px;
 }
 
 .old-price {
@@ -80,6 +109,7 @@ body {
     color: red; /* Cor do preço antigo */
     position: relative; /* Necessário para o pseudo-elemento */
     margin-left: 10px; /* Espaço entre o preço atual e o antigo */
+    font-size: 20px;
 }
 
 /* Pseudo-elemento para criar o risco diagonal */
@@ -87,10 +117,14 @@ body {
     content: ''; /* Necessário para criar o pseudo-elemento */
     position: absolute; /* Posiciona o risco */
     left: 0; /* Alinha à esquerda do preço antigo */
-    top: 50%; /* Posiciona verticalmente no meio */
+    top: 70%; /* Posiciona verticalmente no meio */
     width: 100%; /* Largura do risco */
     height: 2px; /* Espessura do risco */
     background-color: red; /* Cor do risco */
-    transform: rotate(-5deg); /* Roda o risco na diagonal */
+    transform: rotate(-6deg); /* Roda o risco na diagonal */
     transform-origin: left; /* Define a origem da rotação */
+}
+
+.click {
+    cursor: pointer;
 }
