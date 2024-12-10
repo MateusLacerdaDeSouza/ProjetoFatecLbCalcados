@@ -63,4 +63,26 @@ data_pagamento datetime not null,
 foreign key (pedido_id) references pedidos (idpedido)
 );
 
+create table estoque (
+estoque_id int not null primary key auto_increment
+produto_id int,
+tamanho varchar(10),
+quantidade int,
+
+foreign key (produto_id) references produtos(pruduto_id);
+
+);
 C:\xampp\phpMyAdmin\config.inc.php mudar essa porta para 3306
+
+INSERT INTO produtos (nome, descricao, preco, cor, tamanho, marca, url_img, categoria, estoque_qtd)
+VALUES
+('Tênis Esportivo Masculino', 'Tênis confortável para corridas e esportes.', 199.99, 'Preto', 42, 'Nike', 'img/tenis1.jpg', 'Esportivo', 20),
+('Sandália Feminina Confort', 'Sandália casual para o dia a dia.', 89.90, 'Bege', 37, 'Vizzano', 'img/sandalia1.jpg', 'Casual', 15),
+('Chinelo Masculino Básico', 'Chinelo de borracha, ideal para casa e praia.', 29.99, 'Azul', 40, 'Havaianas', 'img/chinelo1.jpg', 'Casual', 50),
+('Bota Adventure', 'Bota resistente para trilhas e aventuras.', 259.90, 'Marrom', 43, 'Timberland', 'img/bota1.jpg', 'Adventure', 10),
+('Sapato Social Masculino', 'Sapato elegante para ocasiões formais.', 189.90, 'Preto', 41, 'Ferracini', 'img/sapato1.jpg', 'Social', 8),
+('Rasteirinha Feminina', 'Rasteirinha leve e prática para dias quentes.', 49.90, 'Rosa', 36, 'Zaxy', 'img/rasteirinha1.jpg', 'Casual', 25),
+('Tênis Casual Unissex', 'Tênis estiloso para uso diário.', 149.99, 'Branco', 39, 'Adidas', 'img/tenis2.jpg', 'Casual', 30),
+('Mocassim Masculino', 'Calçado confortável para trabalho e lazer.', 169.90, 'Marinho', 42, 'Sapatênis', 'img/mocassim1.jpg', 'Casual', 12),
+('Coturno Feminino', 'Coturno moderno para looks descolados.', 229.90, 'Preto', 38, 'Vizzano', 'img/coturno1.jpg', 'Casual', 10),
+('Sapatilha Feminina', 'Sapatilha clássica para conforto e estilo.', 79.90, 'Vermelho', 35, 'Moleca', 'img/sapatilha1.jpg', 'Casual', 20);

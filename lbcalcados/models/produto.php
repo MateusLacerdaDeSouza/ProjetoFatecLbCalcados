@@ -180,8 +180,14 @@ class Produto {
     
 
     public function buscarIndex($limit = 4) {
+        $query = "SELECT * FROM produtos LIMIT ?";
         $stmt = $this->conn->prepare($query);
         
+        if (!$stmt) {
+            die("Erro ao preparar a consulta: " . $this->conn->error);
+        }
+        
+        $stmt->bind_param("i", $limit);
         $stmt->execute();
         $result = $stmt->get_result();
     
@@ -194,7 +200,59 @@ class Produto {
         return $products; // Retorne um array, mesmo que vazio
     }
     
+
+    public function buscarProdutosAgrupados() {
+        $query = "SELECT * FROM produtos ORDER BY nome, tamanho";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
     
+        $produtosAgrupados = [];
+        while ($row = $result->fetch_assoc()) {
+            $nome = $row['nome'];
+            if (!isset($produtosAgrupados[$nome])) {
+                $produtosAgrupados[$nome] = [
+                    'dados' => $row, // Mantém os outros dados do produto
+                    'tamanhos' => [] // Inicializa a lista de tamanhos
+                ];
+            }
+            $produtosAgrupados[$nome]['tamanhos'][] = $row['tamanho'];
+        }
+    
+        return $produtosAgrupados;
+    }
+    
+
+
+    public function buscarTamanhosPorProduto($nomeProduto) {
+        // Use a variável de instância $this->conn para acessar a conexão com o banco de dados.
+        $query = "SELECT tamanho FROM produtos WHERE nome = ? AND estoque_qtd > 0";
+        
+        // Prepare a consulta usando a conexão da classe.
+        $stmt = $this->conn->prepare($query); // Alterado para $this->conn.
+        
+        // Vincula o parâmetro ao nome do produto.
+        $stmt->bind_param("s", $nomeProduto);
+        $stmt->execute();
+        
+        // Obtém o resultado da execução da consulta.
+        $result = $stmt->get_result();
+        
+        $tamanhos = [];
+        
+        // Preenche o array com os tamanhos encontrados.
+        while ($row = $result->fetch_assoc()) {
+            $tamanhos[] = $row['tamanho'];
+        }
+        
+        // Fecha a declaração do prepared statement.
+        $stmt->close();
+        
+        // Retorna a lista de tamanhos encontrados.
+        return $tamanhos;
+    }
+    
+
 
     
 }

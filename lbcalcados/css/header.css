@@ -22,7 +22,7 @@ header {
 }
 
 .logo img {
-    height: 50px; /* Altura do logo */
+    height: 100px; 
 }
 
 .search-container {
@@ -35,7 +35,7 @@ header {
 
 .search-container input {
     width: 720px; /* Largura do campo de busca */
-    /*height: 40px;*/
+    height: 50px;
     padding: 10px 40px 10px 10px; /* Espaçamento interno (esquerda, direita, cima, baixo) */
     border: 1px solid #E8E0E0;
     ; /* Borda do campo */
@@ -64,8 +64,8 @@ header {
 }
 
 .icon {
-    width: 40px; 
-    height: auto; 
+    width: 24px; 
+    height: 24px; 
     cursor: pointer; 
     margin-right: 15px; 
 }
@@ -81,8 +81,8 @@ header {
 
 .top-bar {
     background-color: #1E1E1E; 
-    padding: 10px 0; 
-    height: 80px;
+    /*padding: 5px 0; */
+    height: 50px;
     text-align: center; 
 }
 
@@ -109,7 +109,7 @@ header {
 
 .top-bar a {
     text-decoration: none;
-    font-size: 36px;
+    font-size: 25px;
     font-weight: 600;
     font-style: italic;
     color: #fff;
@@ -117,4 +117,8 @@ header {
 
 a {
     text-decoration: none;
+}
+
+.logo {
+    padding-left: 50px;
 }
