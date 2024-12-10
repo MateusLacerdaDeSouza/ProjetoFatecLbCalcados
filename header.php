@@ -1,6 +1,4 @@
 
-
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -91,7 +89,7 @@
         </div>
         <div class="icons">
             <a href="https://www.instagram.com/weekshoes/"><img src="img/image.png" alt="Instagram da página" class="icon" /></a>
-            <a href="login.php"><img src="img/perfil.png" alt="Perfil" class="icon"/></a>
+            <a href="#"><img src="img/perfil.png" alt="Perfil" class="icon"/></a>
             <img src="img/carrinho.png" alt="Carrinho" class="icon" id="cartIcon"/>
         </div>
     </header>
@@ -143,7 +141,6 @@
                         <span>Qtd: ${item.quantity}</span>
                         <span class="remove-btn" data-index="${index}">X</span>
                     `;
-                    itemElement.setAttribute('data-price', item.price);
                     cartItemsContainer.appendChild(itemElement);
                 });
                 cartMenu.classList.add('active');
@@ -213,10 +210,6 @@
         checkoutBtn.addEventListener('click', function () {
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-
-            console.log(cart);
-
-
             if (cart.length === 0) {
                 alert('Seu carrinho está vazio!');
                 return;
@@ -248,3 +241,4 @@
 
 </body>
 </html>
+
