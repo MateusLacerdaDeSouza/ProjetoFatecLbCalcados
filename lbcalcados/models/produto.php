@@ -1,5 +1,6 @@
 <?php
-require_once '../config/connection.php'; 
+require_once __DIR__ . '/../config/connection.php'; 
+
 
 
 class Produto {
@@ -71,19 +72,189 @@ class Produto {
             die('Erro na preparação da consulta: ' . $this->conn->error);
         }
     
-        $stmt->bind_param("ssdsssdsi", $nome, $descricao, $preco, $cor, $tamanho, $marca, $url_img, $categoria, $estoque_qtd);
+        $stmt->bind_param("ssdsisssi", $nome, $descricao, $preco, $cor, $tamanho, $marca, $url_img, $categoria, $estoque_qtd);
         
-        if (!$stmt->execute()) {
+        if ($stmt->execute()) {
             
             return true;
 
         } else {
-            
+
             die('Erro ao executar a consulta: ' . $stmt->error);
         }
     
         return true;
     }
+
+    public function atualizarImagem($id_produto, $url_img) {
+        $query = "UPDATE produtos SET url_img = ? WHERE id_produto = ?";
+
+        $stmt = $this->conn->prepare($query);
+
+        if($stmt === false){
+            die('Eroo na preparação da consulta: ' . $this->conn->error);
+        }
+
+        $stmt->bind_param("si", $url_img, $id_produto);
+
+
+        if($stmt->execute()){
+            return true;
+        } else {
+            die('Erro ao atualizar a imagem ' . $stmt->error);
+        }
+    }
+
+    public function listarProdutos() {
+        $query = "SELECT * FROM produtos ORDER BY idprodutos DESC";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        $produtos = [];
+        while ($row = $result->fetch_assoc()) {
+            $produtos[] = $row;
+        }
+        return $produtos;
+
+    }
+
+
+    // Método para atualizar as informações de um produto
+    public function atualizarProduto($id_produto, $nome, $descricao, $preco, $cor, $tamanho, $marca, $url_img, $categoria, $estoque_qtd) {
+        if (empty($categoria)) {
+            $categoria = 'diversos';
+        }
+    
+        $query = "UPDATE produtos SET nome = ?, descricao = ?, preco = ?, cor = ?, tamanho = ?, marca = ?, url_img = ?, categoria = ?, estoque_qtd = ? 
+                  WHERE idprodutos = ?";
+    
+        $stmt = $this->conn->prepare($query);
+    
+        if ($stmt === false) {
+            die('Erro na preparação da consulta: ' . $this->conn->error);
+        }
+    
+        $stmt->bind_param("ssdsisssii", $nome, $descricao, $preco, $cor, $tamanho, $marca, $url_img, $categoria, $estoque_qtd, $id_produto);
+    
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            die('Erro ao atualizar o produto: ' . $stmt->error);
+        }
+    }
+    
+
+    // Método para excluir um produto
+    public function excluirProduto($id_produto) {
+        $query = "DELETE FROM produtos WHERE idprodutos = ?";
+
+        $stmt = $this->conn->prepare($query);
+
+        if ($stmt === false) {
+            die('Erro na preparação da consulta: ' . $this->conn->error);
+        }
+
+        $stmt->bind_param("i", $id_produto);
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            die('Erro ao excluir o produto: ' . $stmt->error);
+        }
+    }
+
+    public function buscarProduto($id_produto) {
+        $query = "SELECT * FROM produtos WHERE idprodutos = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("i", $id_produto);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if ($row = $result->fetch_assoc()) {
+            return $row; // Retorna os dados do produto encontrado
+        } else {
+            return null; // Retorna null se não encontrar o produto
+        }
+    }
+    
+
+    public function buscarIndex($limit = 4) {
+        $query = "SELECT * FROM produtos LIMIT ?";
+        $stmt = $this->conn->prepare($query);
+        
+        if (!$stmt) {
+            die("Erro ao preparar a consulta: " . $this->conn->error);
+        }
+        
+        $stmt->bind_param("i", $limit);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        $products = []; // Inicialize como array vazio, não como string
+    
+        while ($row = $result->fetch_assoc()) {
+            $products[] = $row;
+        }
+    
+        return $products; // Retorne um array, mesmo que vazio
+    }
+    
+
+    public function buscarProdutosAgrupados() {
+        $query = "SELECT * FROM produtos ORDER BY nome, tamanho";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        $produtosAgrupados = [];
+        while ($row = $result->fetch_assoc()) {
+            $nome = $row['nome'];
+            if (!isset($produtosAgrupados[$nome])) {
+                $produtosAgrupados[$nome] = [
+                    'dados' => $row, // Mantém os outros dados do produto
+                    'tamanhos' => [] // Inicializa a lista de tamanhos
+                ];
+            }
+            $produtosAgrupados[$nome]['tamanhos'][] = $row['tamanho'];
+        }
+    
+        return $produtosAgrupados;
+    }
+    
+
+
+    public function buscarTamanhosPorProduto($nomeProduto) {
+        // Use a variável de instância $this->conn para acessar a conexão com o banco de dados.
+        $query = "SELECT tamanho FROM produtos WHERE nome = ? AND estoque_qtd > 0";
+        
+        // Prepare a consulta usando a conexão da classe.
+        $stmt = $this->conn->prepare($query); // Alterado para $this->conn.
+        
+        // Vincula o parâmetro ao nome do produto.
+        $stmt->bind_param("s", $nomeProduto);
+        $stmt->execute();
+        
+        // Obtém o resultado da execução da consulta.
+        $result = $stmt->get_result();
+        
+        $tamanhos = [];
+        
+        // Preenche o array com os tamanhos encontrados.
+        while ($row = $result->fetch_assoc()) {
+            $tamanhos[] = $row['tamanho'];
+        }
+        
+        // Fecha a declaração do prepared statement.
+        $stmt->close();
+        
+        // Retorna a lista de tamanhos encontrados.
+        return $tamanhos;
+    }
+    
+
+
+    
 }
 
 // Exemplo de uso (supondo que você tenha uma conexão com o banco $db_connection):

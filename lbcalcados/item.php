@@ -12,80 +12,110 @@
     <link rel="shortcut icon" type="imagex/png" href="img/logo-mini.png">
 </head>
 <body>
-    <!--inclui o Header-->
+    <!-- Inclui o Header -->
     <?php include 'header.php'; ?>
 
-    <!-- primeira div principal -->
+    <?php 
+    require_once __DIR__ . '/models/produto.php';
+
+    if (isset($_GET['id'])) {
+        $id_produto = intval($_GET['id']);
+        $produtoObj = new Produto();
+        $produto = $produtoObj->buscarProduto($id_produto);
+    }
+
+    if (!$produto) {
+        echo "<p>Produto não encontrado!</p>";
+        exit;
+    }
+
+    // Busca produtos relacionados (mesmo modelo/tamanhos diferentes)
+    //$produtosRelacionados = $produtoObj->buscarProdutosAgrupados($produto['nome']);
+    //$tamanhosDisponiveis = $produtoObj->buscarTamanhosPorProduto($nomeProduto);
+    // Busca os tamanhos disponíveis no banco de dados
+    $tamanhosDisponiveis = $produtoObj->buscarTamanhosPorProduto($produto['nome']);
+
+    ?>
+
+    <!-- Primeira div principal -->
     <div class="product-card">
         <!-- Imagem com balão de desconto -->
         <div class="image-section">
             <div class="discount-tag">
                 <p>50% OFF</p>
             </div>
-            <img src="img/bota-alta.jpeg" alt="Produto">
+            <img src="<?php echo 'administrador/' . $produto['url_img']; ?>" alt="<?php echo $produto['nome']; ?>">
         </div>
 
         <!-- Área de conteúdo textual e botões -->
         <div class="info-section">
-            <h3 class="marca">PANDORA</h3>
-            <p class="description">Bota Cano Alto Salto 12cm</p>
+            <h3 class="marca"><?php echo $produto['marca']; ?></h3>
+            <p class="description"><?php echo $produto['nome']; ?></p>
             
             <!-- Avaliação e nota -->
             <div class="rating">
-                <span class="star">&#9733;</span> <!-- Ícone de estrela -->
-                <span class="rating-number"> -/5</span>
+                <span class="star">&#9733;</span>
+                <span class="rating-number">4/5</span>
             </div>
             
             <!-- Preços e parcelamento -->
             <div class="pricing">
-                <span class="price">R$ 175,00</span>
+                <span class="price">R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?></span>
                 <span class="old-price">R$ 350,00</span>
             </div>
-            <p class="parcelamento">2x de R$ 87,50</p>
+            <p class="parcelamento">2x de R$ <?php echo number_format($produto['preco'] / 2, 2, ',', '.'); ?></p>
             
             <!-- Barra fina e outras informações -->
             <div class="separator"></div>
             <div class="color">
                 <p class="color-a">Cor:</p>
-                <p>Preto</p> 
+                <p><?php echo $produto['cor']; ?></p> 
             </div>
             
-            <!-- imagem menor (direita) -->
-            <img src="img/bota-alta.jpeg" alt="Cor Preto" class="color-sample">
+            <!-- Imagem menor (direita) -->
+            <img src="<?php echo 'administrador/' . $produto['url_img']; ?>" alt="<?php echo $produto['nome']; ?>" class="color-sample">
             
+            <!-- Seleção de tamanho -->
             <!-- Seleção de tamanho -->
             <div class="size-options">
                 <p>Tamanho:</p>
                 <div class="buttons">
-                    <button class="size-btn">35 BR</button>
-                    <button class="size-btn">36 BR</button>
-                    <button class="size-btn">37 BR</button>
-                    <button class="size-btn">38 BR</button>
-                    <button class="size-btn">39 BR</button>
-                    <button class="size-btn">40 BR</button>
+                    <?php 
+                    $tamanhosFixos = range(35, 40); // Tamanhos padrão
+                    foreach ($tamanhosFixos as $tamanho):
+                        $disponivel = in_array($tamanho, $tamanhosDisponiveis); // Verifica se está disponível
+                    ?>
+                        <button 
+                            class="size-btn <?php echo $disponivel ? '' : 'disabled'; ?>" 
+                            <?php if ($disponivel): ?> 
+                                onclick="selecionarTamanho(this)"
+                                 data-size="<?php echo $tamanho; ?>"
+                            <?php else: ?> 
+                                disabled 
+                            <?php endif; ?>>
+                            <?php echo $tamanho; ?> BR
+                        </button>
+                    <?php endforeach; ?>
                 </div>
             </div>
+
+
             
-            <!-- Botoes de quantidade e carrinho -->
+            <!-- Botões de quantidade e carrinho -->
             <div class="actions">
-                <!-- Botao de quantidade -->
                 <div class="quantity-container">
                     <button class="quantity-btn" id="decrease">-</button>
-                    <input type="number" id="quantity" value="1" min="0" max="10" readonly>
+                    <input type="number" id="quantity" value="1" min="1" max="10" readonly>
                     <button class="quantity-btn" id="increase">+</button>
                 </div>
-
-                <button class="cart-btn">ADICIONAR AO CARRINHO</button>
+                <button id="addToCartBtn" class="cart-btn">ADICIONAR AO CARRINHO</button>
             </div>
-
         </div>
     </div>
 
-    <!-- segunda div principal -->
+    <!-- Segunda div principal -->
     <div class="second-container">
-        <!-- Div Esquerda -->
         <div class="left-side">
-            <!-- Botões expansíveis -->
             <button class="expandable-btn" onclick="toggleDetails('details1')">
                 Informações técnicas
                 <span class="plus-icon">+</span>
@@ -103,19 +133,13 @@
             </div>
         </div>
 
-        <!-- Div Direita -->
         <div class="right-side">
-            <!-- Texto Frete -->
             <h3 class="frete-title">Frete</h3>
-            
-            <!-- Botão grande para consulta de entrega -->
             <div class="big-delivery-btn">
                 <span class="delivery-text">Consulte o prazo de entrega</span>
                 <span id="cep-text" onclick="showCepInput()">Adicionar CEP</span>
                 <input type="text" id="cep-input" placeholder="Digite seu CEP" style="display: none;">
             </div>
-            
-            <!-- Texto Troca e Devolução com Setas Empilhadas -->
             <div class="exchange-info">
                 <div class="arrows">
                     <span class="arrow">→</span>
@@ -123,87 +147,48 @@
                 </div>
                 <span>Trocas e devoluções grátis em 30 dias</span>
             </div>
-
-        </div>
-    </div>
-
-    <!-- Div Principal de Avaliações -->
-    <div class="reviews-container">
-        <!-- Parte Esquerda -->
-        <div class="left-side">
-            <h3>Avaliações do produto</h3>
-            
-            <!-- Card de Avaliação -->
-            <div class="review-card">
-                <div class="star-rating">
-                    <span class="star-principal">★</span>
-                    <span class="nota-principal">- / 5</span>
-                </div>
-                <p>0 avaliações</p>
-                
-                <!-- Avaliações por Estrelas -->
-                <div class="rating-scale">
-                    <div class="rating-item">
-                        <span class="star-secundaria">★</span><span class="nota-aval">5</span><span class="line"></span><span class="nota-aval">0</span>
-                    </div>
-                    <div class="rating-item">
-                        <span class="star-secundaria">★</span><span class="nota-aval">4</span><span class="line"></span><span class="nota-aval">0</span>
-                    </div>
-                    <div class="rating-item">
-                        <span class="star-secundaria">★</span><span class="nota-aval">3</span><span class="line"></span><span class="nota-aval">0</span>
-                    </div>
-                    <div class="rating-item">
-                        <span class="star-secundaria">★</span><span class="nota-aval">2</span><span class="line"></span><span class="nota-aval">0</span>
-                    </div>
-                    <div class="rating-item">
-                        <span class="star-secundaria">★</span><span class="nota-aval">1</span><span class="line"></span><span class="nota-aval">0</span>
-                    </div>
-                </div>
-                
-                <!-- Botão de Avaliar -->
-                <button class="rate-btn">Avaliar Produto</button>
-            </div>
-        </div>
-
-        <!-- Parte Direita -->
-        <div class="right-side">
-            <p class="view-all-btn">Ver todas as avaliações <span class="arrow">→</span></p>
         </div>
     </div>
 
     <!-- Inclui o rodapé -->
     <?php include 'footer.html'; ?>
 
+    <script>
+    function selecionarTamanho(button, tamanho) {
+        // Remove a classe "selected" de todos os botões
+        document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('selected'));
+        
+        // Adiciona a classe "selected" ao botão clicado
+        button.classList.add('selected');
+        
+        // Aqui você pode armazenar o tamanho selecionado para enviar ao backend
+        console.log("Tamanho selecionado: " + tamanho);
+    }
+    </script>
+
+
     <!-- Script JavaScript -->
     <script>
-        // Função para aumentar a quantidade
+        // Função para alterar quantidade
         document.getElementById('increase').addEventListener('click', function() {
             let quantityInput = document.getElementById('quantity');
             let quantity = parseInt(quantityInput.value);
-            if (quantity < 10) {
-                quantityInput.value = quantity + 1;
-            }
+            if (quantity < 10) quantityInput.value = quantity + 1;
         });
 
-        // Função para diminuir a quantidade
         document.getElementById('decrease').addEventListener('click', function() {
             let quantityInput = document.getElementById('quantity');
             let quantity = parseInt(quantityInput.value);
-            if (quantity > 0) {
-                quantityInput.value = quantity - 1;
-            }
+            if (quantity > 1) quantityInput.value = quantity - 1;
         });
-    </script>
 
-    <!-- script para a seguna div-->
-    <script>
-        // Função para alternar detalhes dos botões expansíveis
+        // Função para detalhes expansíveis
         function toggleDetails(id) {
             const details = document.getElementById(id);
             details.style.display = details.style.display === 'none' ? 'block' : 'none';
         }
 
-        // Função para mostrar campo de entrada de CEP
+        // Função para mostrar campo de CEP
         function showCepInput() {
             const cepText = document.getElementById("cep-text");
             const cepInput = document.getElementById("cep-input");
@@ -211,7 +196,73 @@
             cepInput.style.display = "inline";
             cepInput.focus();
         }
+
+        const colorSamples = document.querySelectorAll('.color-sample');
+        colorSamples.forEach(color => {
+            color.addEventListener('click', () => {
+                colorSamples.forEach(c => c.style.border = 'none');
+                color.style.border = '2px solid red';
+            });
+        });
+
+        const sizeBtns = document.querySelectorAll('.size-btn');
+        sizeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                sizeBtns.forEach(b => b.style.border = 'none');
+                btn.style.border = '2px solid red';
+            });
+        });
+
+        document.getElementById('addToCartBtn').addEventListener('click', function () {
+            const selectedSize = document.querySelector('.size-btn.selected');
+            const quantity = parseInt(document.getElementById('quantity').value);
+            const description = document.querySelector('.description').textContent.trim();
+            const colorElement = document.querySelector('.color p:nth-child(2)');
+            const color = colorElement ? colorElement.textContent.trim() : null;
+           
+            const priceElement = document.querySelector('.price'); // Certifique-se de ter uma classe ou id para o preço na sua página
+            const price = priceElement ? parseFloat(priceElement.textContent.trim().replace('R$', '').replace(',', '.')) : null;
+            const productImage = '<?php echo addslashes($produto['url_img']); ?>';
+
+            if (!selectedSize) {
+                alert('Selecione o tamanho antes de adicionar ao carrinho.');
+                return;
+            }
+
+            if (!color) {
+                alert('Erro ao identificar a cor. Verifique o HTML.');
+                return;
+            }
+
+            const item = {
+                description: description,
+                color: color,
+                size: selectedSize.getAttribute('data-size'),
+                quantity: quantity,
+                price: price, // Inclua o preço
+                image: productImage // Inclua a URL da imagem 
+            };
+
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+            const existingItemIndex = cart.findIndex(i => i.description === item.description && i.color === item.color && i.size === item.size);
+
+            if (existingItemIndex >= 0) {
+                cart[existingItemIndex].quantity += item.quantity;
+            } else {
+                cart.push(item);
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            // Produto foi adicionado ao carrinho
+            alert('Produto adicionado ao carrinho!');
+        });
     </script>
+
+
+
+
 
 </body>
 </html>
