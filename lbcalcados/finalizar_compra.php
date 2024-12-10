@@ -1,13 +1,11 @@
-
 <?php
+session_start(); // Inicie a sessão uma única vez
 
 // Inclua o arquivo de conexão com o banco de dados
 require_once __DIR__ . '/config/connection.php';
 
 // Crie uma instância da classe de conexão
 $dbConnection = new Connection();
-
-// Obtenha a conexão
 $mysqli = $dbConnection->conectar();
 
 // Verifique se a conexão foi bem-sucedida
@@ -15,75 +13,88 @@ if ($mysqli->connect_error) {
     die("Erro de conexão: " . $mysqli->connect_error);
 }
 
+// Verifique se o usuário está logado
+if (!isset($_SESSION['cliente_email'])) {
+    header('Location: login.php');
+    exit();
+}
 
+// Obtenha os dados do usuário do banco de dados
+$email = $_SESSION['cliente_email'];
+$query = "SELECT nome, email, endereco, cpf, telefone FROM clientes WHERE email = ?";
+$stmt = $mysqli->prepare($query);
 
+if ($stmt) {
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
+    if ($result && $result->num_rows > 0) {
+        $user = $result->fetch_assoc();
+    } else {
+        echo "Usuário não encontrado.";
+        exit();
+    }
+} else {
+    echo "Erro na consulta ao banco.";
+    exit();
+}
+
+// Lógica de processamento do carrinho
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['cart'])) {
         $cart = json_decode($_POST['cart'], true);
 
         if (!empty($cart)) {
             foreach ($cart as $item) {
-              //  echo "Produto: " . htmlspecialchars($item['description']) . "<br>";
-               // echo "Cor: " . htmlspecialchars($item['color']) . "<br>";
-              //  echo "Tamanho: " . htmlspecialchars($item['size']) . "<br>";
-               // echo "Quantidade: " . htmlspecialchars($item['quantity']) . "<br>";
-              //  echo "<hr>";
+                $productName = htmlspecialchars($item['description']);
+
+                // Prepara a consulta no banco de dados para buscar detalhes do produto
+                $query = "SELECT url_img, preco FROM produtos WHERE nome = ?";
+                $stmt = $mysqli->prepare($query);
+
+                if ($stmt) {
+                    $stmt->bind_param('s', $productName);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    $productDetails = $result->fetch_assoc();
+
+                    // Verifica se o produto foi encontrado no banco
+                    if ($productDetails) {
+                        // Exibir informações do produto (código comentado pode ser ativado conforme necessário)
+                        // echo "<div class='car-product'>";
+                        // echo "<img src='administrador/" . htmlspecialchars($productDetails['url_img']) . "' alt='" . $productName . "' class='car-product-image'>";
+                        // echo "<div class='car-product-details'>";
+                        // echo "<h3>" . $productName . "</h3>";
+                        // echo "<span class='car-product-price'>R$ " . number_format($productDetails['preco'], 2, ',', '.') . "</span>";
+                        // echo "</div>";
+                        // echo "<div class='car-attributes'>";
+                        // echo "<p>Cor: " . htmlspecialchars($item['color']) . "</p>";
+                        // echo "<p>|</p>";
+                        // echo "<p>Tamanho: " . htmlspecialchars($item['size']) . "</p>";
+                        // echo "<p>|</p>";
+                        // echo "<p>Quantidade: " . htmlspecialchars($item['quantity']) . "</p>";
+                        // echo "</div>";
+                        // echo "</div>";
+                    } else {
+                        echo "<p class='error'>Produto não encontrado no banco de dados: " . $productName . "</p>";
+                    }
+                    $stmt->close();
+                } else {
+                    echo "<p class='error'>Erro ao preparar a consulta para o produto: " . $productName . "</p>";
+                }
             }
         } else {
-            echo "Carrinho vazio ou inválido.";
+            echo "<p class='empty-cart'>Carrinho vazio ou inválido.</p>";
         }
     } else {
-        echo "Nenhum dado do carrinho recebido.";
+        echo "<p class='error'>Nenhum dado do carrinho recebido.</p>";
     }
 } else {
-    echo "Método inválido.";
-}
-
-// Verifica se o carrinho não está vazio para buscar detalhes no banco de dados
-if (!empty($cart)) {
-    foreach ($cart as $item) {
-        // Nome do produto no carrinho
-        $productName = htmlspecialchars($item['description']);
-
-        // Prepara a consulta no banco de dados para buscar detalhes do produto
-        $query = "SELECT url_img, preco FROM produtos WHERE nome = ?";
-        $stmt = $mysqli->prepare($query);
-
-        if ($stmt) {
-            $stmt->bind_param('s', $productName); // Passa o nome do produto como parâmetro
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $productDetails = $result->fetch_assoc();
-
-            // Verifica se o produto foi encontrado no banco
-            if ($productDetails) {
-                //echo "<div class='car-product'>";
-               // echo "<img src='administrador/" . htmlspecialchars($productDetails['url_img']) . "' alt='" . $productName . "' class='car-product-image'>";
-               // echo "<div class='car-product-details'>";
-               // echo "<h3>" . $productName . "</h3>";
-               // echo "<span class='car-product-price'>R$ " . number_format($productDetails['preco'], 2, ',', '.') . "</span>";
-               // echo "</div>";
-               // echo "<div class='car-attributes'>";
-               // echo "<p>Cor: " . htmlspecialchars($item['color']) . "</p>";
-               // echo "<p>|</p>";
-               // echo "<p>Tamanho: " . htmlspecialchars($item['size']) . "</p>";
-               // echo "<p>|</p>";
-                //echo "<p>Quantidade: " . htmlspecialchars($item['quantity']) . "</p>";
-               // echo "</div>";
-                //echo "</div>";
-            } else {
-                echo "<p class='error'>Produto não encontrado no banco de dados: " . $productName . "</p>";
-            }
-            $stmt->close();
-        } else {
-            echo "<p class='error'>Erro ao preparar a consulta para o produto: " . $productName . "</p>";
-        }
-    }
-} else {
-    echo "<p class='empty-cart'>Carrinho vazio ou inválido.</p>";
+    echo "<p class='error'>Método inválido.</p>";
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -159,7 +170,7 @@ if (!empty($cart)) {
                         </div>
                     <?php endforeach; ?>
                 </div>
-            
+                </div>
     
 
             <!-- Div à direita: Cupons e valor total -->
@@ -206,20 +217,21 @@ if (!empty($cart)) {
         </div>
 
         <div class="ident-container">
-            <h3 class="ident-title">Informações do Cliente</h3>
-            <div class="ident-info-row">
-                <label class="ident-label">CPF:</label>
-                <span class="ident-value">123.456.789-00</span>
-            </div>
-            <div class="ident-info-row">
-                <label class="ident-label">E-mail:</label>
-                <span class="ident-value">cliente@email.com</span>
-            </div>
-            <div class="ident-info-row">
-                <label class="ident-label">Telefone:</label>
-                <span class="ident-value">(11) 91234-5678</span>
-            </div>
-        </div>
+    <h3 class="ident-title">Informações do Cliente</h3>
+    <div class="ident-info-row">
+        <label class="ident-label">CPF:</label>
+        <span class="ident-value"><?php echo htmlspecialchars($user['cpf']); ?></span>
+    </div>
+    <div class="ident-info-row">
+        <label class="ident-label">E-mail:</label>
+        <span class="ident-value"><?php echo htmlspecialchars($user['email']); ?></span>
+    </div>
+    <div class="ident-info-row">
+        <label class="ident-label">Telefone:</label>
+        <span class="ident-value"><?php echo htmlspecialchars($user['telefone']); ?></span>
+    </div>
+</div>
+
 
     </div>
     
@@ -232,18 +244,6 @@ if (!empty($cart)) {
 
         <div class="endereco-container">
             <h3 class="endereco-title">Dados da Entrega</h3>
-            <div class="endereco-info-row">
-                <label class="endereco-label">CPF:</label>
-                <span class="endereco-value" id="cpf">123.456.789-00</span>
-            </div>
-            <div class="endereco-info-row">
-                <label class="endereco-label">E-mail:</label>
-                <span class="endereco-value" id="email">cliente@email.com</span>
-            </div>
-            <div class="endereco-info-row">
-                <label class="endereco-label">Telefone:</label>
-                <span class="endereco-value" id="telefone">(11) 91234-5678</span>
-            </div>
             <div class="endereco-info-row">
                 <label class="endereco-label">Endereço:</label>
                 <span class="endereco-value" id="endereco">Rua Exemplo, 123, São Paulo - SP</span>
@@ -420,10 +420,18 @@ if (!empty($cart)) {
         function finishOrder() {
             // Simula a criação de uma nota fiscal
             const invoice = `
-                Nota Fiscal
-                -------------------
-                Valor Total: R$ ${totalAmount.toFixed(2)}
-                Método de Pagamento: ${document.querySelector('input[name="payment"]:checked').value}
+               Nota Fiscal
+    -------------------
+    CPF: <?php echo htmlspecialchars($user['cpf']); ?>
+         Produtos:
+        <?php foreach ($cart as $item): ?>
+            - Produto: <?php echo htmlspecialchars($item['description']); ?> | 
+            Quantidade: <?php echo $item['quantity']; ?> | 
+             Preço Unitário: R$ <?php echo number_format($item['price'], 2, ',', '.'); ?> |
+            Subtotal: R$ <?php echo number_format($item['quantity'] * $item['price'], 2, ',', '.'); ?>
+        <?php endforeach; ?>
+    Valor Total: R$ ${totalAmount.toFixed(2)}
+    Método de Pagamento: ${document.querySelector('input[name="payment"]:checked').value}
             `;
 
             // Envia a nota para outra página

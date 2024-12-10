@@ -1,5 +1,5 @@
 <?php
-
+header('Content-Type: application/json');
 
 require_once __DIR__ . '/config/connection.php';
 
@@ -7,17 +7,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = isset($_POST['email']) ? trim($_POST['email']) : null;
     $password = isset($_POST['password']) ? trim($_POST['password']) : null;
 
-    // Verifica se os campos foram preenchidos
     if (empty($email) || empty($password)) {
-        echo "Por favor, preencha todos os campos!";
+        echo json_encode(['success' => false, 'message' => 'Por favor, preencha todos os campos.']);
         exit();
     }
 
-    // Instancia a conexão com o banco de dados
     $db = new Connection();
     $conn = $db->conectar();
 
-    // Consulta para buscar o cliente pelo email
     $query = "SELECT email, senha FROM clientes WHERE email = ?";
     $stmt = $conn->prepare($query);
 
@@ -29,26 +26,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($result && $result->num_rows > 0) {
             $cliente = $result->fetch_assoc();
 
-            // Depuração: Exibir a senha do banco e a senha inserida antes da verificação
-            echo "<pre>";
-            echo "Senha no Banco: " . $cliente['senha'] . "\n";
-            echo "Senha Digitada: " . $password . "\n";
-            echo "</pre>";
-
             // Verifica a senha usando password_verify
-            if (password_verify($password, $cliente['senha'])) {
+            if ($password === $cliente['senha'] || password_verify($password, $cliente['senha'])) {
                 session_start();
                 $_SESSION['cliente_email'] = $cliente['email'];
-                header('Location: cliente_dashboard.php');
-                exit();
+
+                echo json_encode(['success' => true, 'message' => 'Login realizado com sucesso.']);
             } else {
-                echo "Senha incorreta!";
+                echo json_encode(['success' => false, 'message' => 'Senha incorreta.']);
             }
         } else {
-            echo "Cliente não encontrado!";
+            echo json_encode(['success' => false, 'message' => 'E-mail não encontrado.']);
         }
     } else {
-        echo "Erro ao preparar a consulta: " . $conn->error;
+        echo json_encode(['success' => false, 'message' => 'Erro na consulta ao banco.']);
     }
+} else {
+    echo json_encode(['success' => false, 'message' => 'Método inválido.']);
 }
 ?>

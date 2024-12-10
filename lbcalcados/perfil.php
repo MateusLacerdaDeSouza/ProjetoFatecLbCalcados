@@ -1,3 +1,43 @@
+<?php
+session_start();
+require_once 'config/connection.php';
+
+// Verifique se o usuário está logado
+if (!isset($_SESSION['cliente_email'])) {
+    // Redirecione para a página de login se o usuário não estiver logado
+    header('Location: login.php');
+    exit();
+}
+
+// Obtenha os dados do usuário do banco de dados
+$email = $_SESSION['cliente_email'];
+$db = new Connection();
+$conn = $db->conectar();
+
+$query = "SELECT nome, email, endereco, cpf FROM clientes WHERE email = ?";
+$stmt = $conn->prepare($query);
+
+if ($stmt) {
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result && $result->num_rows > 0) {
+        $user = $result->fetch_assoc();
+    } else {
+        // Se não encontrar o usuário, exiba uma mensagem de erro
+        echo "Usuário não encontrado.";
+        exit();
+    }
+} else {
+    echo "Erro na consulta ao banco.";
+    exit();
+}
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
