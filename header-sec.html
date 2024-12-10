@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Header</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background-color: #ffffff;
+        }
+
+        .left, .center, .right {
+            display: flex;
+            align-items: center;
+        }
+
+        .left a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #000;
+        }
+
+        .left .icon-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 57px;
+        }
+
+        .left .icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+        }
+
+        .left span {
+            font-size: 16px;
+            font-weight: bold;
+            line-height: 1; /* Ajuste para centralização vertical */
+        }
+
+        .img-center {
+            height: 100px;
+        }
+
+        .icon {
+            height: 24px;
+        }
+
+        .right {
+            gap: 20px; /* Adiciona espaçamento entre os itens */
+        }
+
+
+    </style>
+</head>
+<body>
+    <header>
+        <!-- Esquerda -->
+        <div class="left">
+            <a href="index.php">
+                <div class="icon-container">
+                    <img src="img/casa.png" alt="Home" class="icon">
+                </div>
+                <span>Voltar ao início</span>
+            </a>
+        </div>
+
+        <!-- Centro -->
+        <div class="center">
+            <img src="img/B.png" alt="Logo" class="img-center">
+        </div>
+
+        <!-- Direita -->
+        <div class="right">
+            <a href="https://www.instagram.com/weekshoes/"><img src="img/image.png" alt="Instagram da página" class="icon" /></a>
+            <a href="#"><img src="img/perfil.png" alt="Perfil" class="icon"/></a>
+        </div>
+    </header>
+</body>
+</html>

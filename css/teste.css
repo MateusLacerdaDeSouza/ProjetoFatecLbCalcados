@@ -1,0 +1,19 @@
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif; /* Fonte do corpo */
+    display: flex;
+    justify-content: center; /* Centraliza o conteúdo horizontalmente */
+    align-items: center; /* Centraliza o conteúdo verticalmente */
+    height: 100vh; /* Altura da página */
+    background-color: #f8f9fa; /* Cor de fundo da página */
+}
+
+header {
+    width: 100%; /* Largura total do header */
+}
+
+
+
+
+
+
