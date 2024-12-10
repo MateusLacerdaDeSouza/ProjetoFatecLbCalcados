@@ -1,31 +1,17 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LB Calçados</title>
-</head>
-<body>
-    <!-- Inclui header -->
-    <?php include 'header-sec.html'; ?>
+<?php
+session_start();
 
+// Verifica se a sessão está ativa e se os dados do cliente estão presentes
+if (!isset($_SESSION['cliente_email'])) {
+    header('Location: login.php');
+    exit();
+}
 
-
-    <?php
-        if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["invoice"])) {
-            $invoice = htmlspecialchars($_POST["invoice"]);
-            echo nl2br($invoice);
-        } else {
-            echo "Nenhuma nota fiscal gerada.";
-        }
-    ?>
-    
-
-
-    
-    <br><br><br><br><br><br><br><br><br><br>
-
-    <!-- Inclui o rodapé -->
-    <?php include 'footer.html'; ?>
-</body>
-</html>
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $invoice = htmlspecialchars($_POST["invoice"]);
+    echo "<h2>Nota Fiscal Gerada:</h2>";
+    echo "<pre>" . nl2br($invoice) . "</pre>";
+} else {
+    echo "<p>Erro: Dados da nota fiscal não encontrados.</p>";
+}
+?>
