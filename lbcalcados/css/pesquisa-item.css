@@ -1,0 +1,163 @@
+/* <uniquifier>: Use a unique and descriptive class name
+<weight>: Use a value from 100 to 900*/
+
+.inter-uniquifier {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: weight;
+    font-style: normal;
+}
+
+.titulo-principal {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 40px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #1e1e1e;
+    font-weight: 200;
+}
+
+/* Estilos gerais para alinhamento na lateral direita */
+.sidebar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 20px;
+    padding: 20px;
+    margin-bottom: 100px;
+}
+
+.product-count{
+    display: flex;
+    gap: 5px;
+}
+
+.product-count p {
+    font-size: 20px;
+    margin: 0;
+    padding: 0;
+    font-weight: 500;
+    color: #000;
+}
+
+/* Estilo da div de ordenação */
+.sort-options {
+    position: relative;
+}
+
+.sort-button {
+    background-color: #FAF2F2;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 500;
+    border-radius: 10px;
+    width: 250px;
+    height: 45px;
+}
+
+/* Estilo do dropdown */
+.dropdown {
+    display: none;
+    position: absolute;
+    top: 45px; /* Ajuste para não colidir com o botão */
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    border-radius: 4px;
+    width: 250px; /* Largura definida para coincidir com o botão */
+    z-index: 10; /* Garante que o dropdown se sobreponha ao conteúdo abaixo */
+}
+
+.dropdown p {
+    margin: 0;
+    padding: 8px 0;
+    cursor: pointer;
+}
+
+/* Exibe o dropdown quando a div é clicada */
+.sort-options.active .dropdown {
+    display: block;
+}
+
+/* Configurações gerais da página */
+.page-container {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    height: 100%;
+}
+
+/* Coluna de filtros */
+.filter-column {
+    width: 20%;
+    padding: 10px;
+    border-right: 1px solid #ff0000;
+}
+
+.filter-section {
+    margin-bottom: 20px;
+}
+
+/* Seção de produtos */
+.product-grid {
+    width: 80%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    border: 1px solid #ff0000;
+}
+
+/* Cartão de produto */
+.product-card {
+    position: relative;
+    border: 1px solid #ff0000;
+    padding: 10px;
+    text-align: center;
+    background-color: #fff;
+}
+
+.product-card img {
+    width: 100%;
+    height: auto;
+}
+
+.product-name {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 8px 0 4px;
+}
+
+.product-description {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.product-price {
+    font-size: 16px;
+    color: #333;
+}
+
+/* Preço antigo */
+.old-price {
+    text-decoration: line-through;
+    color: #999;
+    margin-right: 8px;
+}
+
+/* Badge de desconto */
+.discount-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: red;
+    color: #fff;
+    font-size: 12px;
+    padding: 5px;
+    border-radius: 4px;
+    font-weight: bold;
+}

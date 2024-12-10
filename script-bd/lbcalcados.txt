@@ -1,0 +1,88 @@
+create database lbcalcados;
+
+use lbcalcados;
+
+create table administradores (
+    idadmin INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(200) NOT NULL,
+    email VARCHAR(200) NOT NULL,
+    senha VARCHAR(100) NOT NULL,
+    UNIQUE KEY (email)
+);
+
+
+create table clientes (
+idcliente int not null auto_increment primary key,
+ nome varchar(200) not null,
+email varchar(200) not null,
+senha varchar(100) not null,
+telefone varchar (15) not null,
+endereco varchar (200) not null,
+cep varchar (10),
+cidade varchar (50),
+estado varchar (50),
+cpf varchar(15) not null,
+unique key (cpf)
+);
+create table produtos (
+idprodutos int not null auto_increment primary key,
+ nome varchar (100),
+descricao text,
+preco decimal (10,2) not null,
+cor varchar(50) not null,
+tamanho int not null,
+marca varchar(20) not null,
+url_img varchar(300), 
+categoria varchar(50) not null,
+estoque_qtd INT NOT NULL,
+data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
+);
+create table pedidos (
+idpedido int not null auto_increment primary key,
+cliente_id int,
+ datapedido date,
+etapa varchar(20) not null,
+valor_total decimal not null,
+foreign key (cliente_id) references clientes (idcliente)
+);
+create table itenspedidos(
+iditens int not null primary key auto_increment,
+pedido_id int, 
+produto_id int, 
+quantidade int not null,
+preco_unidade decimal (10,2) not null,
+foreign key (pedido_id) references pedidos (idpedido),
+foreign key (produto_id) references produtos (idprodutos)
+);
+create table pagamentos (
+pagamento_id int not null primary key auto_increment,
+pedido_id int, 
+forma_pagamento varchar (50) not null,
+valor decimal (10,2) not null,
+data_pagamento datetime not null,
+foreign key (pedido_id) references pedidos (idpedido)
+);
+
+create table estoque (
+estoque_id int not null primary key auto_increment
+produto_id int,
+tamanho varchar(10),
+quantidade int,
+
+foreign key (produto_id) references produtos(pruduto_id);
+
+);
+C:\xampp\phpMyAdmin\config.inc.php mudar essa porta para 3306
+
+INSERT INTO produtos (nome, descricao, preco, cor, tamanho, marca, url_img, categoria, estoque_qtd)
+VALUES
+('Tênis Esportivo Masculino', 'Tênis confortável para corridas e esportes.', 199.99, 'Preto', 42, 'Nike', 'img/tenis1.jpg', 'Esportivo', 20),
+('Sandália Feminina Confort', 'Sandália casual para o dia a dia.', 89.90, 'Bege', 37, 'Vizzano', 'img/sandalia1.jpg', 'Casual', 15),
+('Chinelo Masculino Básico', 'Chinelo de borracha, ideal para casa e praia.', 29.99, 'Azul', 40, 'Havaianas', 'img/chinelo1.jpg', 'Casual', 50),
+('Bota Adventure', 'Bota resistente para trilhas e aventuras.', 259.90, 'Marrom', 43, 'Timberland', 'img/bota1.jpg', 'Adventure', 10),
+('Sapato Social Masculino', 'Sapato elegante para ocasiões formais.', 189.90, 'Preto', 41, 'Ferracini', 'img/sapato1.jpg', 'Social', 8),
+('Rasteirinha Feminina', 'Rasteirinha leve e prática para dias quentes.', 49.90, 'Rosa', 36, 'Zaxy', 'img/rasteirinha1.jpg', 'Casual', 25),
+('Tênis Casual Unissex', 'Tênis estiloso para uso diário.', 149.99, 'Branco', 39, 'Adidas', 'img/tenis2.jpg', 'Casual', 30),
+('Mocassim Masculino', 'Calçado confortável para trabalho e lazer.', 169.90, 'Marinho', 42, 'Sapatênis', 'img/mocassim1.jpg', 'Casual', 12),
+('Coturno Feminino', 'Coturno moderno para looks descolados.', 229.90, 'Preto', 38, 'Vizzano', 'img/coturno1.jpg', 'Casual', 10),
+('Sapatilha Feminina', 'Sapatilha clássica para conforto e estilo.', 79.90, 'Vermelho', 35, 'Moleca', 'img/sapatilha1.jpg', 'Casual', 20);
