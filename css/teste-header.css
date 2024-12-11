@@ -1,0 +1,124 @@
+/* <uniquifier>: Use a unique and descriptive class name
+<weight>: Use a value from 100 to 900*/
+
+.inter-uniquifier {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: weight;
+    font-style: normal;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+}
+
+header {
+    display: flex;
+    justify-content: space-between; /* Espaçamento entre os elementos */
+    align-items: center; /* Alinha os itens verticalmente ao centro */
+    padding: 10px 20px; /* Espaçamento interno */
+    background-color: #ffffff; /* Cor de fundo do header */
+}
+
+.logo img {
+    height: 100px; 
+}
+
+.search-container {
+    position: relative; /* Permite que a imagem seja posicionada em relação ao container */
+    width: 720px; /* Largura do campo de busca */
+    height: 50px;
+    display: flex; /* Para alinhar o campo de busca e o botão */
+    align-items: center; /* Alinha verticalmente o campo e a imagem */
+}
+
+.search-container input {
+    width: 720px; /* Largura do campo de busca */
+    height: 50px;
+    padding: 10px 40px 10px 10px; /* Espaçamento interno (esquerda, direita, cima, baixo) */
+    border: 1px solid #E8E0E0;
+    ; /* Borda do campo */
+    border-radius: 30px; /* Bordas arredondadas */
+    background-color: #E8E0E0;
+}
+
+.search-container button {
+    padding: 10px 15px; /* Espaçamento do botão */
+    margin-left: 5px; /* Espaço entre o campo de busca e o botão */
+    background-color: #007BFF; /* Cor de fundo do botão */
+    color: white; /* Cor do texto do botão */
+    border: none; /* Remove borda padrão */
+    border-radius: 4px; 
+    cursor: pointer; 
+}
+
+.icons {
+    display: flex; 
+    gap: 15px; 
+}
+
+.icon {
+    font-size: 24px; 
+    cursor: pointer; 
+}
+
+.icon {
+    width: 24px; 
+    height: 24px; 
+    cursor: pointer; 
+    margin-right: 15px; 
+}
+
+.icon-busca {
+    position: absolute; 
+    right: 10px; 
+    width: 20px; 
+    height: 20px; 
+    cursor: pointer; 
+}
+
+
+.top-bar {
+    background-color: #1E1E1E; 
+    /*padding: 5px 0; */
+    height: 50px;
+    text-align: center; 
+}
+
+.top-bar ul {
+    list-style: none; 
+    display: flex; 
+    justify-content: space-around; 
+    margin: 0; 
+    padding: 0; 
+}
+
+.top-bar li {
+    color: #ffffff; 
+    font-size: 36px; 
+    cursor: pointer; 
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal; 
+}
+
+.top-bar li:hover {
+    text-decoration: underline; 
+}
+
+.top-bar a {
+    text-decoration: none;
+    font-size: 25px;
+    font-weight: 600;
+    font-style: italic;
+    color: #fff;
+}
+
+a {
+    text-decoration: none;
+}
+
+.logo {
+    padding-left: 50px;
+}

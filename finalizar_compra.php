@@ -1,3 +1,4 @@
+
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cart'])) {
     $cart = json_decode($_POST['cart'], true);
@@ -16,3 +17,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cart'])) {
     echo "Nenhum dado recebido.";
 }
 ?>
+
