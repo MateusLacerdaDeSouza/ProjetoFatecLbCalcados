@@ -49,21 +49,34 @@
             overflow-y: auto;
             max-height: 60%;
         }
+
         .cart-item {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column; /* Organiza os itens em coluna */
             margin-bottom: 15px;
             padding-bottom: 10px;
             border-bottom: 1px solid #ddd;
         }
+
         .cart-item span {
             font-size: 14px;
         }
+
+        .cart-item .item-description {
+            font-weight: bold; /* Deixa o "Teste: ..." mais destacado */
+            margin-bottom: 10px; /* Espaçamento entre a descrição e os outros itens */
+        }
+
+        .cart-item .item-details {
+            display: flex;
+            flex-direction: column; /* Organiza os detalhes abaixo da descrição */
+            margin-left: 10px;
+        }
+
         .cart-item .remove-btn {
-            font-size: 16px;
-            color: red;
             cursor: pointer;
         }
+
         .buttons-container {
             display: flex;
             justify-content: space-between;
@@ -78,6 +91,36 @@
         .h3-car {
             padding-bottom: 20px;
         }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between; /* Distribui o espaço entre as divs */
+            align-items: center; /* Alinha os itens verticalmente ao centro */
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .item-details {
+            display: flex;
+            flex-direction: column; /* Alinha os detalhes (cor, tamanho, quantidade) verticalmente */
+            flex-grow: 1; /* Faz a div item-details ocupar o máximo de espaço disponível */
+        }
+
+        .apagar-produto {
+            display: flex;
+            justify-content: center; /* Centraliza o "X" dentro da div */
+            align-items: center; /* Alinha o "X" verticalmente no centro */
+            width: 30px; /* Largura fixa para a div do "X" */
+            height: 30px; /* Altura fixa para a div do "X" */
+            cursor: pointer;
+        }
+
+        .apagar-produto span {
+            font-size: 20px;
+            color: red;
+        }
+
     </style>
 </head>
 <body>
@@ -139,9 +182,13 @@
                     const itemElement = document.createElement('div');
                     itemElement.classList.add('cart-item');
                     itemElement.innerHTML = `
-                        <span>Cor: ${item.color}, Tamanho: ${item.size}</span>
-                        <span>Qtd: ${item.quantity}</span>
-                        <span class="remove-btn" data-index="${index}">X</span>
+                        <div class="item-details">
+                            <span class="item-description">${item.description}</span>
+                            <span>Cor: ${item.color}</span>
+                            <span>Tamanho: ${item.size}</span>
+                            <span>Qtd: ${item.quantity}</span>
+                        </div>
+                        <div class="apagar-produto"><span class="remove-btn" data-index="${index}">X</span></div>
                     `;
                     itemElement.setAttribute('data-price', item.price);
                     cartItemsContainer.appendChild(itemElement);
@@ -186,10 +233,6 @@
         });
         */
 
-
-
-
-
         // Função para remover itens do carrinho
         cartItemsContainer.addEventListener('click', function(event) {
             if (event.target.classList.contains('remove-btn')) {
@@ -213,9 +256,7 @@
         checkoutBtn.addEventListener('click', function () {
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-
             console.log(cart);
-
 
             if (cart.length === 0) {
                 alert('Seu carrinho está vazio!');
@@ -238,13 +279,6 @@
             document.body.appendChild(form);
             form.submit();
         });
-
-
-
-
     </script>
-
-    <!--ponto de parada-->
-
 </body>
 </html>
